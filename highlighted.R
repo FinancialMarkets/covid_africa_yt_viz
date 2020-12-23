@@ -7,10 +7,10 @@ options(browser = "/usr/bin/firefox")
 
 data <- read_csv("../african_latest_data.csv")
 data$dateRep <- as.Date(data$dateRep, format="%d/%m/%Y")
-data$popData2018 <- data$popData2018 / 1000000
-data$cases_per_million <- data$cumulative_cases / data$popData2018
+data$popData2019 <- data$popData2019 / 1000000
+data$cases_per_million <- data$cumulative_cases / data$popData2019
 
-data_graphic <- data[, c("dateRep", "countriesAndTerritories", "cases_per_million", "cumulative_cases", "cases")]
+data_graphic <- data[, c("dateRep", "countriesAndTerritories", "cases_per_million", "cumulative_cases", "cases_weekly")]
 
 ## remove france
 
@@ -24,7 +24,7 @@ ma <- function(x, n = 3){ifelse(x > 3, stats::filter(x, rep(1 / n, n), sides = 1
 avg <- data_graphic %>% 
     group_by(countriesAndTerritories) %>%
     arrange(dateRep) %>%
-    mutate(mov_avg_new = ma(cases)) %>%
+    mutate(mov_avg_new = ma(cases_weekly)) %>%
     mutate(mov_avg_cum_cases = ma(cumulative_cases)) 
 
 
